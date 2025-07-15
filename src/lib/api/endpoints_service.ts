@@ -25,3 +25,14 @@ export async function updateEndpoint(projectId: string, endpointId: string, endp
   const res = await ApiService.put(`/projects/${projectId}/endpoints/${endpointId}`, endpoint);
   return res.data;
 }
+
+
+export const updateEndpointSchema = async (projectId: string, endpointId: string, data: Partial<Endpoint>): Promise<Endpoint> => {
+    try {
+        const response = await ApiService.put(`/projects/${projectId}/endpoints/${endpointId}`, data);
+        return response.data;
+    } catch (error) {
+        console.error(`Failed to update endpoint ${endpointId}:`, error);
+        throw error;
+    }
+};

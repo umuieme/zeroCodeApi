@@ -1,5 +1,5 @@
 'use client';
-import { deleteEndpoint, getEndpoints } from "@/lib/api/endpoints";
+import { deleteEndpoint, getEndpoints } from "@/lib/api/endpoints_service";
 import { Endpoint } from "@/types/endpoint";
 import { format } from "date-fns/format";
 import Link from "next/link";
@@ -74,7 +74,11 @@ export default function Page() {
                                     className="border-t hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                                 >
                                     <td className="px-6 py-4 font-mono text-s text-zinc-700 dark:text-zinc-300">
-                                        {ep._id}
+                                        <Link
+                                            href={`/projects/${projectId}/endpoints/${ep._id}`}
+                                            className="text-blue-600 hover:underline">
+                                            {ep._id}
+                                        </Link>
                                     </td>
                                     <td className="px-6 py-4">{ep.name}</td>
                                     <td className="px-6 py-4 text-muted-foreground">

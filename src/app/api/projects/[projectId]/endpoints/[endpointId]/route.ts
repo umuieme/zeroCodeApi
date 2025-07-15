@@ -14,7 +14,7 @@ type ProjectEndpointParams = {
 export async function GET(request: Request, context: ProjectEndpointParams) {
   try {
     await dbConnect();
-    const { projectId, endpointId } = context.params;
+    const { projectId, endpointId } = await context.params;
     const endpoint = await Endpoint.findOne({
       _id: new Types.ObjectId(endpointId),
       projectId: new Types.ObjectId(projectId),
@@ -49,6 +49,7 @@ export async function PUT(request: Request, context: ProjectEndpointParams) {
       { status: 400 }
     );
   }
+  console.log("Updating endpoint with data:", parsed.data);
   const { name, description, endpoint, schema } = parsed.data;
   const updated = await Endpoint.findOneAndUpdate({
     _id: new Types.ObjectId(endpointId),
