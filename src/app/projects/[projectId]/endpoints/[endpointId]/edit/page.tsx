@@ -2,14 +2,12 @@
 import { use, useEffect, useState } from "react";
 import { Endpoint, EndpointInfo } from "@/types/endpoint";
 import { toast } from "sonner";
-import { getEndpointById, updateEndpoint } from "@/lib/api/endpoints";
+import { getEndpointById, updateEndpoint } from "@/lib/api/endpoints_service";
 import CreateEndpointForm from "../../create/components/CreateEndpointForm";
+import { useParams } from "next/navigation";
 
-export default function Page({
-    params,
-}: {
-    params: { projectId: string; endpointId: string };
-}) {
+export default function Page() {
+    const params = useParams<{ projectId: string, endpointId: string }>();
     const [endpoint, setEndpoint] = useState<Endpoint | null>(null);
     const [loading, setLoading] = useState(true);
 

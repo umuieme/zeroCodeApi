@@ -8,6 +8,7 @@ import { EndpointInfo, SchemaField } from "@/types/endpoint";
 import ApiService from "@/lib/api/api_service";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import { toast } from "sonner";
+import SchemaEditor from "../components/SchemaEditor";
 
 
 
@@ -23,10 +24,9 @@ export default function CreateEndpointPage() {
         setStep(2);
     };
 
-    const handleEndpointSubmit = async (fields: SchemaField[]) => {
+    const handleCreateEndpoint = async (schema: any) => {
         if (!info) return;
 
-        const schema = generateJsonSchema(fields);
         try {
             setSaving(true);
             await ApiService.post(`/projects/${projectId}/endpoints`, {
@@ -34,18 +34,17 @@ export default function CreateEndpointPage() {
                 schema,
             });
 
-            toast.success("✅ Endpoint created successfully!");
+            toast.success("Endpoint created successfully!");
+            // Redirect to the project's endpoint list
             window.location.href = `/projects/${projectId}/endpoints`;
         } catch (error: any) {
             console.log("Submit error:", error);
-            const message =
-                error?.response?.data?.error || "Something went wrong.";
-            toast.error("❌ Something went wrong");
-
+            const message = error?.response?.data?.error || "Something went wrong.";
+            toast.error(`${message}`);
         } finally {
             setSaving(false);
         }
-    }
+    };
 
     const generateJsonSchema = (fields: SchemaField[]) => {
         const properties: Record<string, any> = {};
@@ -68,7 +67,14 @@ export default function CreateEndpointPage() {
             <div className="max-w-3xl mx-auto py-8 px-4">
                 <StepIndicator step={step} />
                 {step === 1 && <CreateEndpointForm onNext={handleNext} />}
-                {step === 2 && info && <SchemaBuilder info={info} onSubmit={handleEndpointSubmit} submitting={saving} />}
+                {step === 2 && info && <SchemaEditor
+                    // Pass an empty object for the initial schema when creating
+                    initialSchema={{}}
+                    // Pass the submission logic as the onSave callback
+                    onSave={handleCreateEndpoint}
+                    isSaving={saving}
+                />}
+
             </div>
         </SnackbarProvider>
 
