@@ -5,9 +5,6 @@ import Endpoint from "@/models/Endpoint";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
-/**
- * Type definition for route parameters when handling specific endpoint operations.
- */
 type EndpointParams = {
   params: {
     projectId: string;
@@ -15,10 +12,6 @@ type EndpointParams = {
   };
 };
 
-/**
- * Handles GET requests to fetch a single endpoint by ID within a project.
- * Route: GET /api/projects/[projectId]/endpoints/[endpointId]
- */
 export async function GET(request: Request, context: EndpointParams) {
   try {
     await dbConnect();
@@ -50,10 +43,7 @@ export async function GET(request: Request, context: EndpointParams) {
   }
 }
 
-/**
- * Handles PUT requests to update a single endpoint by ID within a project.
- * Route: PUT /api/projects/[projectId]/endpoints/[endpointId]
- */
+
 export async function PUT(request: Request, context: EndpointParams) {
   try {
     await dbConnect();
@@ -98,10 +88,7 @@ export async function PUT(request: Request, context: EndpointParams) {
   }
 }
 
-/**
- * Handles DELETE requests to delete a single endpoint by ID within a project.
- * Route: DELETE /api/projects/[projectId]/endpoints/[endpointId]
- */
+
 export async function DELETE(request: Request, context: EndpointParams) {
   try {
     await dbConnect();

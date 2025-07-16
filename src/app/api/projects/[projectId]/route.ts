@@ -5,17 +5,10 @@ import { formatZodError } from "@/lib/validation/validationErrorFormatter";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 
-/**
- * Type definition for route parameters when handling project-specific operations.
- */
 type ProjectParams = {
   params: { projectId: string };
 };
 
-/**
- * Handles GET requests to fetch a single project by ID.
- * Route: GET /api/projects/[projectId]
- */
 export async function GET(_: Request, { params }: ProjectParams) {
   try {
     // Await params before destructuring projectId
@@ -39,13 +32,9 @@ export async function GET(_: Request, { params }: ProjectParams) {
   }
 }
 
-/**
- * Handles PUT requests to update a single project by ID.
- * Route: PUT /api/projects/[projectId]
- */
 export async function PUT(request: Request, { params }: ProjectParams) {
   try {
-    // Await params before destructuring projectId
+    
     const { projectId } = await params;
 
     await dbConnect();
@@ -77,10 +66,6 @@ export async function PUT(request: Request, { params }: ProjectParams) {
   }
 }
 
-/**
- * Handles DELETE requests to delete a single project by ID.
- * Route: DELETE /api/projects/[projectId]
- */
 export async function DELETE(_: Request, { params }: ProjectParams) {
   try {
     // Await params before destructuring projectId

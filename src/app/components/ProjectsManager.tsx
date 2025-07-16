@@ -70,7 +70,6 @@ export default function ProjectManager() {
       });
 
       if (!response.ok) {
-        // Attempt to parse validation errors from the response
         const errorData = await response.json();
         const errorMessage = errorData.error || 'Failed to create/update project';
         const issues = errorData.issues ? JSON.stringify(errorData.issues) : '';
@@ -142,7 +141,7 @@ export default function ProjectManager() {
 
   return (
     <div className="container mx-auto p-4 font-sans antialiased">
-      <h1 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Project Manager</h1>
+      {/* <h1 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Project Manager</h1> */}
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-md mb-6 transition-all duration-300 ease-in-out">
@@ -165,7 +164,7 @@ export default function ProjectManager() {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out  text-black"
               required
               disabled={isLoading}
             />
@@ -181,26 +180,26 @@ export default function ProjectManager() {
               name="logo"
               value={formData.logo}
               onChange={handleInputChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out  text-black"
               disabled={isLoading}
             />
           </div>
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="description">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-y"
-            rows={4}
-            disabled={isLoading}
-          />
-        </div>
+            <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="description">
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out resize-y text-black"
+              rows={4}
+              disabled={isLoading}
+            />
+          </div>
 
         {/* Hidden owner input for demonstration */}
         <input type="hidden" name="owner" value={formData.owner} />

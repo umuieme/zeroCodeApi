@@ -1,4 +1,4 @@
-// Conceptual change in your Project model file (e.g., src/models/Project.ts)
+
 import mongoose from 'mongoose';
 import { uuid } from 'zod/v4-mini';
 
@@ -7,7 +7,7 @@ const ProjectSchema = new mongoose.Schema({
   description: { type: String },
   logo: { type: String },
 
-  owner: { type: String, required: true, }, // Assuming owner is a UUID string
+  owner: { type: String, required: true, },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
