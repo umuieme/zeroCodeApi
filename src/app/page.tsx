@@ -18,7 +18,7 @@ export default function Home() {
       <main className="flex-grow"> 
         <h1 className="text-4xl font-bold text-center my-8">Welcome to Your Project Dashboard</h1>
        
-        <ProjectManager initialShowForm={showNewProjectForm} />
+        <ProjectManager  />
       </main>
     </div>
   );

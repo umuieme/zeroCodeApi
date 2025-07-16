@@ -18,7 +18,7 @@ export default function ProjectManager() {
     name: '',
     description: '',
     logo: '',
-    owner: 'test_user_id_123' // Hardcoded owner for demonstration. Replace with dynamic value from auth.
+    owner: crypto.randomUUID()
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +100,7 @@ export default function ProjectManager() {
       name: project.name,
       description: project.description || '',
       logo: project.logo || '',
-      owner: project.owner // Ensure owner is carried over during edit
+      owner: project.owner 
     });
     setEditingId(project._id || null);
   };
