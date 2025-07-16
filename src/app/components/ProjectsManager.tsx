@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Re-introducing useRouter
 
 
 interface Project {
@@ -7,29 +8,46 @@ interface Project {
   name: string;
   description?: string;
   logo?: string;
-  owner: string; // Added owner to the interface
+  owner: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export default function ProjectManager() {
+interface ProjectManagerProps {
+  initialShowForm?: boolean; // Prop to control initial form visibility
+}
+
+export default function ProjectManager({ initialShowForm = false }: ProjectManagerProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [formData, setFormData] = useState<Project>({
     name: '',
     description: '',
     logo: '',
-    owner: crypto.randomUUID()
+    owner: '' // Initialize owner as an empty string to prevent hydration mismatch
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [projectToDeleteId, setProjectToDeleteId] = useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState(initialShowForm); // State to manage form visibility
+
+  const router = useRouter(); // Initialize useRouter for navigation
 
 
   useEffect(() => {
+    // Generate UUID only on the client-side after initial render
+    if (formData.owner === '') {
+      setFormData(prev => ({ ...prev, owner: crypto.randomUUID() }));
+    }
     fetchProjects();
   }, []);
+
+  // Effect to update form visibility when initialShowForm prop changes
+  useEffect(() => {
+    setIsFormVisible(initialShowForm);
+  }, [initialShowForm]);
+
 
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -87,6 +105,7 @@ export default function ProjectManager() {
       resetForm();
       fetchProjects();
       setError(null);
+      setIsFormVisible(false); // Hide the form after successful submission
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred during submission');
     } finally {
@@ -99,9 +118,10 @@ export default function ProjectManager() {
       name: project.name,
       description: project.description || '',
       logo: project.logo || '',
-      owner: project.owner 
+      owner: project.owner
     });
     setEditingId(project._id || null);
+    setIsFormVisible(true); // Show form when editing
   };
 
   const confirmDelete = (id: string) => {
@@ -135,13 +155,19 @@ export default function ProjectManager() {
   };
 
   const resetForm = () => {
-    setFormData({ name: '', description: '', logo: '', owner: 'test_user_id_123' }); // Reset owner too
+    setFormData({ name: '', description: '', logo: '', owner: crypto.randomUUID() });
     setEditingId(null);
+    setIsFormVisible(false);
+  };
+
+
+  const handleProjectClick = (projectId: string) => {
+    router.push(`/projects/${projectId}`);
   };
 
   return (
     <div className="container mx-auto p-4 font-sans antialiased">
-      {/* <h1 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Project Manager</h1> */}
+      <h1 className="text-3xl font-extrabold mb-6 text-gray-800 text-center">Project Manager</h1>
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-md mb-6 transition-all duration-300 ease-in-out">
@@ -149,44 +175,45 @@ export default function ProjectManager() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="mb-8 p-6 border border-gray-200 rounded-xl shadow-lg bg-white">
-        <h2 className="text-2xl font-semibold mb-5 text-gray-700">
-          {editingId ? 'Edit Project' : 'Add New Project'}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="name">
-              Name*
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out  text-black"
-              required
-              disabled={isLoading}
-            />
+      {isFormVisible && (
+        <form onSubmit={handleSubmit} className="mb-8 p-6 border border-gray-200 rounded-xl shadow-lg bg-white">
+          <h2 className="text-2xl font-semibold mb-5 text-gray-700">
+            {editingId ? 'Edit Project' : 'Add New Project'}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="name">
+                Name*
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out text-black"
+                required
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="logo">
+                Logo URL
+              </label>
+              <input
+                type="url"
+                id="logo"
+                name="logo"
+                value={formData.logo}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out text-black"
+                disabled={isLoading}
+              />
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="logo">
-              Logo URL
-            </label>
-            <input
-              type="url"
-              id="logo"
-              name="logo"
-              value={formData.logo}
-              onChange={handleInputChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out  text-black"
-              disabled={isLoading}
-            />
-          </div>
-        </div>
-
-        <div className="mb-6">
+          <div className="mb-6">
             <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="description">
               Description
             </label>
@@ -201,36 +228,36 @@ export default function ProjectManager() {
             />
           </div>
 
-        {/* Hidden owner input for demonstration */}
-        <input type="hidden" name="owner" value={formData.owner} />
+          <input type="hidden" name="owner" value={formData.owner} />
 
-        <div className="flex gap-3 justify-end">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <svg className="animate-spin h-5 w-5 text-white mr-3" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : null}
-            {editingId ? 'Update Project' : 'Add Project'}
-          </button>
-
-          {editingId && (
+          <div className="flex gap-3 justify-end">
             <button
-              type="button"
-              onClick={resetForm}
+              type="submit"
               disabled={isLoading}
-              className="bg-gray-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-300 ease-in-out disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed"
             >
-              Cancel
+              {isLoading ? (
+                <svg className="animate-spin h-5 w-5 text-white mr-3" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : null}
+              {editingId ? 'Update Project' : 'Add Project'}
             </button>
-          )}
-        </div>
-      </form>
+
+            {editingId && (
+              <button
+                type="button"
+                onClick={resetForm}
+                disabled={isLoading}
+                className="bg-gray-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-300 ease-in-out disabled:bg-gray-300 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
+        </form>
+      )}
 
       <div className="mt-10">
         <h2 className="text-2xl font-bold mb-5 text-gray-800 text-center">Your Projects</h2>
@@ -242,7 +269,11 @@ export default function ProjectManager() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {projects.map(project => (
-              <div key={project._id} className="border border-gray-200 p-5 rounded-xl shadow-md bg-white flex flex-col justify-between">
+              <div
+                key={project._id}
+                className="border border-gray-200 p-5 rounded-xl shadow-md bg-white flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow duration-200"
+                onClick={() => project._id && handleProjectClick(project._id)} // Handle click for navigation
+              >
                 <div>
                   {project.logo && (
                     <img
@@ -259,17 +290,17 @@ export default function ProjectManager() {
                   {project.description && (
                     <p className="text-gray-700 text-sm mb-4 line-clamp-3">{project.description}</p>
                   )}
-                  <p className="text-gray-500 text-xs mt-2">Owner: {project.owner}</p> {/* Display owner */}
+                  <p className="text-gray-500 text-xs mt-2">Owner: {project.owner}</p>
                 </div>
                 <div className="mt-auto flex gap-3">
                   <button
-                    onClick={() => handleEdit(project)}
+                    onClick={(e) => { e.stopPropagation(); handleEdit(project); }} // Stop propagation to prevent parent div click
                     className="flex-1 text-sm bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition duration-300 ease-in-out"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => project._id && confirmDelete(project._id)}
+                    onClick={(e) => { e.stopPropagation(); project._id && confirmDelete(project._id); }} // Stop propagation
                     className="flex-1 text-sm bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300 ease-in-out"
                   >
                     Delete
@@ -295,7 +326,7 @@ export default function ProjectManager() {
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-200 ease-in-out"
+                className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-300 ease-in-out"
               >
                 Delete
               </button>

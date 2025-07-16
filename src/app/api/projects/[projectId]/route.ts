@@ -11,9 +11,7 @@ type ProjectParams = {
 
 export async function GET(_: Request, { params }: ProjectParams) {
   try {
-    // Await params before destructuring projectId
-    const { projectId } = await params;
-
+    const { projectId } = await params; 
     await dbConnect();
 
     if (!Types.ObjectId.isValid(projectId)) {
@@ -34,8 +32,7 @@ export async function GET(_: Request, { params }: ProjectParams) {
 
 export async function PUT(request: Request, { params }: ProjectParams) {
   try {
-    
-    const { projectId } = await params;
+    const { projectId } = await params; // Await params
 
     await dbConnect();
 
@@ -68,8 +65,7 @@ export async function PUT(request: Request, { params }: ProjectParams) {
 
 export async function DELETE(_: Request, { params }: ProjectParams) {
   try {
-    // Await params before destructuring projectId
-    const { projectId } = await params;
+    const { projectId } = await params; // Await params
 
     await dbConnect();
 

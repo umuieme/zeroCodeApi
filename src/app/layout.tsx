@@ -32,8 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="top-right" richColors />
-        {/* Remove AppHeader from here. It should be in page.tsx or other specific pages. */}
-        {/* <AppHeader /> */}
+        
         {children}
         <AppFooter />
       </body>

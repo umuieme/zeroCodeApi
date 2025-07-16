@@ -4,10 +4,6 @@ import { createProjectSchema } from "@/lib/validation/projectSchemaValidator";
 import { formatZodError } from "@/lib/validation/validationErrorFormatter";
 import { NextResponse } from "next/server";
 
-/**
- * Handles GET requests to fetch all projects.
- * Route: GET /api/projects
- */
 export async function GET() {
   try {
     await dbConnect();
@@ -19,10 +15,6 @@ export async function GET() {
   }
 }
 
-/**
- * Handles POST requests to create a new project.
- * Route: POST /api/projects
- */
 export async function POST(request: Request) {
   try {
     await dbConnect();
@@ -44,4 +36,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create project" }, { status: 500 });
   }
 }
-    
