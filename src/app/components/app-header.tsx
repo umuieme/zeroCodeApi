@@ -1,7 +1,14 @@
+'use client'; // This directive is necessary for client-side interactivity like click handlers
+
 import { User } from "lucide-react";
 import Image from "next/image";
 
-export default function AppHeader() {
+// Define the props that AppHeader will accept
+interface AppHeaderProps {
+  onNewProjectClick: () => void; // A function that will be called when the button is clicked
+}
+
+export default function AppHeader({ onNewProjectClick }: AppHeaderProps) {
   return (
     <header className="w-full flex bg-neutral-900 text-white justify-between shadow-sm px-4 py-2">
       <Image
@@ -11,13 +18,16 @@ export default function AppHeader() {
         alt="Logo"
       />
       <div className="flex items-center gap-4">
-        <button className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+        {/* Attach the onNewProjectClick function to the button's onClick event */}
+        <button
+          onClick={onNewProjectClick}
+          className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+        >
           + New Project
         </button>
         <div className="flex bg-gray-700 rounded-full p-2">
           <User size={32} />
         </div>
-
       </div>
     </header>
   );
