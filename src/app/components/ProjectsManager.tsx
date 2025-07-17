@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Re-introducing useRouter
+import { useRouter } from 'next/navigation'; 
 
 
 interface Project {
@@ -14,7 +14,7 @@ interface Project {
 }
 
 interface ProjectManagerProps {
-  initialShowForm?: boolean; // Prop to control initial form visibility
+  initialShowForm?: boolean; 
 }
 
 export default function ProjectManager({ initialShowForm = false }: ProjectManagerProps) {
@@ -23,27 +23,25 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
     name: '',
     description: '',
     logo: '',
-    owner: '' // Initialize owner as an empty string to prevent hydration mismatch
+    owner: '' 
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [projectToDeleteId, setProjectToDeleteId] = useState<string | null>(null);
-  const [isFormVisible, setIsFormVisible] = useState(initialShowForm); // State to manage form visibility
+  const [isFormVisible, setIsFormVisible] = useState(initialShowForm);
 
-  const router = useRouter(); // Initialize useRouter for navigation
+  const router = useRouter(); 
 
 
   useEffect(() => {
-    // Generate UUID only on the client-side after initial render
     if (formData.owner === '') {
       setFormData(prev => ({ ...prev, owner: crypto.randomUUID() }));
     }
     fetchProjects();
   }, []);
 
-  // Effect to update form visibility when initialShowForm prop changes
   useEffect(() => {
     setIsFormVisible(initialShowForm);
   }, [initialShowForm]);
@@ -105,7 +103,7 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
       resetForm();
       fetchProjects();
       setError(null);
-      setIsFormVisible(false); // Hide the form after successful submission
+      setIsFormVisible(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An unknown error occurred during submission');
     } finally {
@@ -121,7 +119,7 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
       owner: project.owner
     });
     setEditingId(project._id || null);
-    setIsFormVisible(true); // Show form when editing
+    setIsFormVisible(true); 
   };
 
   const confirmDelete = (id: string) => {

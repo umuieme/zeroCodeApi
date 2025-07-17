@@ -18,7 +18,7 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
 
   useEffect(() => {
     if (projectId) {
@@ -94,7 +94,7 @@ export default function ProjectDetailPage() {
           <p className="text-gray-700 mt-2 leading-relaxed">{project.description || 'No description provided.'}</p>
         </div>
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-gray-800">Owner:</h3>
+          <h3 className="text-xl font-semibold text-gray-800">Owner Id:</h3>
           <p className="text-gray-700 mt-2">{project.owner}</p>
         </div>
         <div className="mb-4">
