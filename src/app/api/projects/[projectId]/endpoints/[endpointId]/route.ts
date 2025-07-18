@@ -39,7 +39,7 @@ export async function GET(request: Request, context: ProjectEndpointParams) {
 
 export async function PUT(request: Request, context: ProjectEndpointParams) {
   await dbConnect();
-  const { projectId, endpointId } = context.params;
+  const { projectId, endpointId } = await context.params;
   const body = await request.json();
 
   const parsed = createEndpointSchema.safeParse(body);
@@ -67,7 +67,7 @@ export async function PUT(request: Request, context: ProjectEndpointParams) {
 
 export async function DELETE(request: Request, context: ProjectEndpointParams) {
   await dbConnect();
-  const { projectId, endpointId } = context.params;
+  const { projectId, endpointId } = await context.params;
   const deleted = await Endpoint.findOneAndDelete({
     _id: new Types.ObjectId(endpointId),
     projectId: new Types.ObjectId(projectId),
