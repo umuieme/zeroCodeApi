@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation'; 
+import { useParams, useRouter } from 'next/navigation';
+import EndpointListPage from './endpoints/page';
 
 interface Project {
   _id?: string;
@@ -18,7 +19,11 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); 
+  const router = useRouter();
+
+  const handleAddEndpointClick = () => {
+    router.push(`/projects/${projectId}/endpoints/create`);
+  }
 
   useEffect(() => {
     if (projectId) {
@@ -111,21 +116,22 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-4"> 
+      <div className="flex justify-center gap-4">
         <button
-          onClick={() => router.back()} 
+          onClick={() => router.back()}
           className="bg-gray-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-300 ease-in-out"
         >
           Go Back
         </button>
-        <button className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+        <button
+          onClick={handleAddEndpointClick}
+          className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out">
           + Add Endpoint
         </button>
       </div>
 
-      <div className="mt-10 p-6 bg-white rounded-xl shadow-lg border border-gray-200">
-        <h2 className="text-2xl font-bold mb-4 text-gray-800">Endpoints for this Project</h2>
-        <p className="text-gray-600">No endpoints found yet. Add one above!</p>
+      <div className="bg-white dark:bg-gray-900 mt-10 p-6 rounded-xl shadow-lg border border-gray-200">
+        <EndpointListPage />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 
 
 interface Project {
@@ -14,7 +14,7 @@ interface Project {
 }
 
 interface ProjectManagerProps {
-  initialShowForm?: boolean; 
+  initialShowForm?: boolean;
 }
 
 export default function ProjectManager({ initialShowForm = false }: ProjectManagerProps) {
@@ -23,7 +23,7 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
     name: '',
     description: '',
     logo: '',
-    owner: '' 
+    owner: ''
   });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +32,7 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
   const [projectToDeleteId, setProjectToDeleteId] = useState<string | null>(null);
   const [isFormVisible, setIsFormVisible] = useState(initialShowForm);
 
-  const router = useRouter(); 
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
       owner: project.owner
     });
     setEditingId(project._id || null);
-    setIsFormVisible(true); 
+    setIsFormVisible(true);
   };
 
   const confirmDelete = (id: string) => {

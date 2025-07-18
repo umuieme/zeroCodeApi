@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import SchemaEditor from "../components/SchemaEditor";
 import TabButton from "./components/tab_button";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import DataViewer from "./components/data_viewer";
 
 export default function AdvancedEndpointDetailPage() {
@@ -19,7 +19,7 @@ export default function AdvancedEndpointDetailPage() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [activeTab, setActiveTab] = useState<'schema' | 'data'>('schema');
-
+    const router = useRouter();
     useEffect(() => {
         const fetchEndpoint = async () => {
             try {
@@ -75,7 +75,8 @@ export default function AdvancedEndpointDetailPage() {
     return (
         <div className="max-w-6xl mx-auto py-10 px-6 font-sans">
             <div className="mb-6">
-                <Link href={`/projects/${projectId}/endpoints`} className="text-blue-600 hover:underline">&larr; Back to Endpoints</Link>
+
+                <button className="text-blue-600 hover:underline" onClick={() => router.back()}>&larr; Back to Endpoints</button>
             </div>
 
             <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl p-8 mb-8">
