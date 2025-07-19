@@ -11,6 +11,10 @@ type ProjectEndpointParams = {
   };
 };
 
+export async function verifyEndpoint(userId: string, projectId: string, endpointId: string) {
+  return await Endpoint.findOne({ _id: endpointId, projectId: projectId, userId: userId });
+}
+
 export async function GET(request: Request, context: ProjectEndpointParams) {
   try {
     await dbConnect();
