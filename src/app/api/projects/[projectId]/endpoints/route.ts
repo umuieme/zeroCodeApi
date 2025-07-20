@@ -1,3 +1,4 @@
+import { getUserId } from "@/app/api/helper/userHelper";
 import dbConnect from "@/lib/db/dbConnect";
 import { createEndpointSchema } from "@/lib/validation/endpointSchemaValidator";
 import { formatZodError } from "@/lib/validation/validationErrorFormatter";
@@ -15,7 +16,7 @@ export async function GET(
   _: Request, // Request object is not used directly, hence '_'
   context: ProjectEndpointParams
 ) {
-  const { projectId } = context.params;
+  const { projectId } = await context.params;
 
   try {
     await dbConnect();
@@ -58,6 +59,7 @@ export async function POST(
     }
 
     const body = await request.json();
+    body.userId = getUserId(request); 
     const parsed = createEndpointSchema.safeParse(body);
 
     if (!parsed.success) {

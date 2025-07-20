@@ -7,9 +7,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import SchemaEditor from "../components/SchemaEditor";
-import TabButton from "./components/tab_button";
+import TabButton from "./components/TabButton";
 import { useParams, useRouter } from "next/navigation";
-import DataViewer from "./components/data_viewer";
+import DataViewer from "./components/DataViewer";
+import { convertFieldsToJsonSchema } from "@/lib/utils/schemUtils";
 
 export default function AdvancedEndpointDetailPage() {
     const params = useParams<{ projectId: string, endpointId: string }>();
@@ -46,14 +47,7 @@ export default function AdvancedEndpointDetailPage() {
     const handleSaveChanges = async () => {
         if (!endpoint) return;
 
-        const newSchema = {
-            type: "object",
-            properties: fields.reduce((acc, field) => {
-                acc[field.name] = { type: field.type };
-                return acc;
-            }, {} as Record<string, { type: string }>),
-            required: fields.filter(f => f.required).map(f => f.name),
-        };
+        const newSchema = convertFieldsToJsonSchema(fields);
 
         setSaving(true);
         try {
@@ -132,7 +126,7 @@ export default function AdvancedEndpointDetailPage() {
                             </button>
                         </div>
                     )}
-                    {activeTab === 'data' && <DataViewer schema={endpoint.schema} />}
+                    {activeTab === 'data' && <DataViewer schema={endpoint.schema} endpointId={endpointId} projectId={projectId} />}
                 </div>
             </div>
         </div>
