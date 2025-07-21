@@ -5,6 +5,7 @@ import AppHeader from "./components/app-header";
 import { AppFooter } from "./components/app-footer";
 import { SnackbarProvider } from "notistack";
 import { Toaster } from "sonner";
+import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,16 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster position="top-right" richColors />
-        <AppHeader />
-        {children}
-        <AppFooter />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Toaster position="top-right" richColors />
+          <AppHeader />
+          {children}
+          <AppFooter />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
