@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AppHeader from "./components/app-header";
+// import AppHeader from "./components/app-header"; // This import should remain commented out or removed
 import { AppFooter } from "./components/app-footer";
-import { SnackbarProvider } from "notistack";
+import { SnackbarProvider } from "notistack"; // Note: SnackbarProvider is typically used with a client context provider
 import { Toaster } from "sonner";
 import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 

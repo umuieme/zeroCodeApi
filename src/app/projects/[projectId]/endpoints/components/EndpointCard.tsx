@@ -12,7 +12,7 @@ type Props = {
 export default function EndpointCard({ endpoint }: Props) {
     const handleDelete = async () => {
         try {
-            // await deleteEndpoint(endpoint._id, endpoint._id);
+            
             toast.success("Deleted!");
             window.location.reload();
         } catch {

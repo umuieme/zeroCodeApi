@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import ImportSchemaModal from "./components/ImportSchemaModal";
 import SchemaEditor from "../components/SchemaEditor";
 import StepIndicator from "./components/StepIndicator";
+import { convertFieldsToJsonSchema } from "@/lib/utils/schemUtils";
 
 export default function CreateEndpointPage() {
     const [step, setStep] = useState<1 | 2>(1);
@@ -35,23 +36,17 @@ export default function CreateEndpointPage() {
             return;
         }
 
-        const schema = {
-            type: "object",
-            properties: fields.reduce((acc, field) => {
-                acc[field.name] = { type: field.type };
-                return acc;
-            }, {} as Record<string, { type: string }>),
-            required: fields.filter(f => f.required).map(f => f.name),
-        };
+        const schema = convertFieldsToJsonSchema(fields);
+
 
         try {
             setSaving(true);
             await ApiService.post(`/projects/${projectId}/endpoints`, { ...info, schema });
-            toast.success("✅ Endpoint created successfully!");
+            toast.success("Endpoint created successfully!");
             window.location.href = `/projects/${projectId}/endpoints`;
         } catch (error: any) {
             const message = error?.response?.data?.error || "Something went wrong.";
-            toast.error(`❌ ${message}`);
+            toast.error(`${message}`);
         } finally {
             setSaving(false);
         }

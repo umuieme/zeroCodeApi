@@ -1,15 +1,25 @@
-import Image from "next/image";
+'use client'; 
+
+import { useState } from 'react'; 
 import AppHeader from "./components/app-header";
-import { SnackbarProvider } from "notistack";
+import ProjectManager from './components/ProjectsManager';
 
 export default function Home() {
-  return (
+  const [showNewProjectForm, setShowNewProjectForm] = useState(false);
 
+  const toggleNewProjectForm = () => {
+    setShowNewProjectForm(prev => !prev); 
+  };
+
+  return (
     <div className="flex flex-col min-h-screen">
-      <main>
-        <h1>Main component</h1>
+     
+      <AppHeader onNewProjectClick={toggleNewProjectForm} />
+      <main className="flex-grow"> 
+        <h1 className="text-4xl font-bold text-center my-8">Welcome to Your Project Dashboard</h1>
+      
+        <ProjectManager initialShowForm={showNewProjectForm} />
       </main>
     </div>
-
   );
 }

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function Page() {
+export default function EndpointListPage() {
     const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
     const [loading, setLoading] = useState(false);
     const projectId = typeof window !== "undefined"
