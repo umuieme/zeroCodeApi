@@ -5,6 +5,7 @@ import "./globals.css";
 import { AppFooter } from "./components/app-footer";
 import { SnackbarProvider } from "notistack"; // Note: SnackbarProvider is typically used with a client context provider
 import { Toaster } from "sonner";
+import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,15 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster position="top-right" richColors />
-        
-        {children}
-        <AppFooter />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Toaster position="top-right" richColors />
+          <AppHeader />
+          {children}
+          <AppFooter />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
