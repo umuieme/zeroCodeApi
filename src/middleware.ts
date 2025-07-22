@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
 
 const isProtectedRoute = createRouteMatcher([
-  '/projects(.*)', 
+  '/projects(.*)', '/'
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
