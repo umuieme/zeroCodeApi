@@ -53,11 +53,11 @@ export async function POST(request: Request, context: ProjectEndpointParams) {
     console.log("POST zzzz", projectId, endpointId, userId);
     const endpoint = await verifyEndpoint(userId, projectId, endpointId);
     console.log("Endpoint found:", endpoint);
-    if (!endpoint || !endpoint.schema) {
+    if (!endpoint || !endpoint.jsonSchema) {
       return NextResponse.json({ error: "Endpoint or schema not found" }, { status: 404 });
     }
     const body = await request.json();
-    const validate = ajv.compile(endpoint.schema);
+    const validate = ajv.compile(endpoint.jsonSchema);
     if (typeof body !== 'object' || body === null || Array.isArray(body)) {
       return NextResponse.json({ error: "Request body must be a JSON object." }, { status: 400 });
     }

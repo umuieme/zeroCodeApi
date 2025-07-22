@@ -16,7 +16,7 @@ export type Endpoint = {
   name: string;
   endpoint: string;
   description?: string;
-  schema: Record<string, any>;
+  jsonSchema: Record<string, any>;
   createdAt: string;
   updatedAt: string;
 };

@@ -1,3 +1,4 @@
+import { getUserId, validateUserProjectAccess } from "@/app/api/helper/userHelper";
 import dbConnect from "@/lib/db/dbConnect";
 import { createEndpointSchema } from "@/lib/validation/endpointSchemaValidator";
 import { formatZodError } from "@/lib/validation/validationErrorFormatter";
@@ -22,6 +23,8 @@ export async function GET(req: Request, context: ProjectEndpointParams) {
 
   try {
     await dbConnect();
+    const userId = getUserId(req);
+    validateUserProjectAccess(userId, projectId);
 
     if (!Types.ObjectId.isValid(projectId)) {
       return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
@@ -62,13 +65,18 @@ export async function POST(req: Request, context: ProjectEndpointParams) {
 
   try {
     await dbConnect();
-
+    const userId = getUserId(req);
+    await validateUserProjectAccess(userId, projectId);
     if (!Types.ObjectId.isValid(projectId)) {
       return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
     }
 
     const body = await req.json();
+    body.projectId = new Types.ObjectId(projectId);
+    body.userId = userId;
+    console.log("Creating endpoint with data:", body);
     const parsed = createEndpointSchema.safeParse(body);
+    console.log("Parsed endpoint data:", parsed);
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -79,14 +87,16 @@ export async function POST(req: Request, context: ProjectEndpointParams) {
         { status: 400 }
       );
     }
+    console.log("zz: ",parsed.data.jsonSchema, { depth: null });
 
+    console.log("Creating endpoint with validated data:", parsed.data);
     const newEndpoint = await Endpoint.create({
       ...parsed.data,
-      projectId: new Types.ObjectId(projectId),
     });
 
     return NextResponse.json(newEndpoint, { status: 201 });
   } catch (error) {
+    console.error("POST /api/projects/[projectId]/endpoints error:", error);
     return NextResponse.json(
       { error: "Failed to create endpoint" },
       { status: 500 }

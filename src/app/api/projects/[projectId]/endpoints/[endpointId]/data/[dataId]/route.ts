@@ -28,7 +28,7 @@ export async function PUT(request: Request, context: ProjectEndpointDataParams) 
         const userId = getUserId(request);
 
         const endpoint = await verifyEndpoint(userId, projectId, endpointId);
-        if (!endpoint || !endpoint.schema) {
+        if (!endpoint || !endpoint.jsonSchema) {
             return NextResponse.json({ error: "Endpoint or schema not found" }, { status: 404 });
         }
 
@@ -37,7 +37,7 @@ export async function PUT(request: Request, context: ProjectEndpointDataParams) 
             return NextResponse.json({ error: "Request body must be a JSON object." }, { status: 400 });
         }
 
-        const validate = ajv.compile(endpoint.schema);
+        const validate = ajv.compile(endpoint.jsonSchema);
         if (!validate(body)) {
             return NextResponse.json({ error: "Data validation failed", details: validate.errors }, { status: 400 });
         }

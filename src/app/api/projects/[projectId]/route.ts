@@ -1,15 +1,17 @@
 import dbConnect from "@/lib/db/dbConnect";
 import Project from "@/models/Project";
-import { createProjectSchema } from "@/lib/validation/projectSchemaValidator";
+import { createProjectSchema, updateProjectSchema } from "@/lib/validation/projectSchemaValidator";
 import { formatZodError } from "@/lib/validation/validationErrorFormatter";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
+import { updateEndpointSchema } from "@/lib/api/endpoints_service";
+import { getUserId } from "../../helper/userHelper";
 
 type ProjectParams = {
   params: { projectId: string };
 };
 
-export async function GET(_: Request, { params }: ProjectParams) {
+export async function GET(request: Request, { params }: ProjectParams) {
   try {
     const { projectId } = await params; 
     await dbConnect();
@@ -17,9 +19,9 @@ export async function GET(_: Request, { params }: ProjectParams) {
     if (!Types.ObjectId.isValid(projectId)) {
       return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
     }
-
+    const userId = getUserId(request);
     const project = await Project.findById(projectId);
-    if (!project) {
+    if (!project || project.userId.toString() !== userId) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
@@ -41,7 +43,7 @@ export async function PUT(request: Request, { params }: ProjectParams) {
     }
 
     const body = await request.json();
-    const parsed = createProjectSchema.safeParse(body);
+    const parsed = updateProjectSchema.safeParse(body);
 
     if (!parsed.success) {
       console.log("Project update validation failed:", parsed.error);

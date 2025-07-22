@@ -6,10 +6,11 @@ import { UserButton } from "@clerk/nextjs";
 import LogoutButton from "./logoutButton";
 
 interface AppHeaderProps {
-  onNewProjectClick: () => void; 
+  onNewProjectClick?: () => void;
+  shouldShowNewProjectButton?: boolean;
 }
 
-export default function AppHeader({ onNewProjectClick }: AppHeaderProps) {
+export default function AppHeader({ onNewProjectClick, shouldShowNewProjectButton }: AppHeaderProps) {
   return (
     <header className="w-full flex bg-neutral-900 text-white justify-between shadow-sm px-4 py-2">
       <Image
@@ -19,16 +20,18 @@ export default function AppHeader({ onNewProjectClick }: AppHeaderProps) {
         alt="Logo"
       />
       <div className="flex items-center gap-4">
-        <button
+
+        {shouldShowNewProjectButton && <button
           onClick={onNewProjectClick}
           className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
         >
           + New Project
         </button>
-        
+        }
+
         <div className="flex items-center gap-2">
           <div className="flex bg-gray-700 rounded-full p-2">
-            <UserButton 
+            <UserButton
               appearance={{
                 elements: {
                   userButtonAvatarBox: "h-8 w-8",
