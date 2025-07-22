@@ -288,7 +288,6 @@ export default function ProjectManager({ initialShowForm = false }: ProjectManag
                   {project.description && (
                     <p className="text-gray-700 text-sm mb-4 line-clamp-3">{project.description}</p>
                   )}
-                  <p className="text-gray-500 text-xs mt-2">Owner: {project.owner}</p>
                 </div>
                 <div className="mt-auto flex gap-3">
                   <button

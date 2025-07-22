@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import LogoutButton from "./logoutButton";
+import Link from "next/link";
 
 interface AppHeaderProps {
   onNewProjectClick?: () => void;
@@ -13,12 +14,14 @@ interface AppHeaderProps {
 export default function AppHeader({ onNewProjectClick, shouldShowNewProjectButton }: AppHeaderProps) {
   return (
     <header className="w-full flex bg-neutral-900 text-white justify-between shadow-sm px-4 py-2">
-      <Image
-        src="/svg/horizontal_logo.svg"
-        width={150}
-        height={50}
-        alt="Logo"
-      />
+      <Link href="/">
+        <Image
+          src="/svg/horizontal_logo.svg"
+          width={150}
+          height={50}
+          alt="Logo"
+        />
+      </Link>
       <div className="flex items-center gap-4">
 
         {onNewProjectClick && <button
