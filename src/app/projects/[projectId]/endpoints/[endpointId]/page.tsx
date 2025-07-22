@@ -28,10 +28,10 @@ export default function AdvancedEndpointDetailPage() {
                 const data = await getEndpointById(projectId, endpointId);
                 setEndpoint(data);
                 // Convert schema object to array of fields for the editor
-                const initialFields = data.schema?.properties ? Object.entries(data.schema.properties).map(([name, props]: [string, any]) => ({
+                const initialFields = data.jsonSchema?.properties ? Object.entries(data.jsonSchema.properties).map(([name, props]: [string, any]) => ({
                     name,
                     type: props.type,
-                    required: data.schema.required?.includes(name) || false,
+                    required: data.jsonSchema.required?.includes(name) || false,
                 })) : [];
                 setFields(initialFields);
             } catch (error) {
@@ -51,8 +51,8 @@ export default function AdvancedEndpointDetailPage() {
 
         setSaving(true);
         try {
-            await updateEndpointSchema(projectId, endpointId, { ...endpoint, schema: newSchema });
-            setEndpoint({ ...endpoint, schema: newSchema });
+            await updateEndpointSchema(projectId, endpointId, { ...endpoint, jsonSchema: newSchema });
+            setEndpoint({ ...endpoint, jsonSchema: newSchema });
             toast.success("Schema saved successfully!");
         } catch (error) {
             toast.error("Failed to save schema.");
@@ -126,7 +126,7 @@ export default function AdvancedEndpointDetailPage() {
                             </button>
                         </div>
                     )}
-                    {activeTab === 'data' && <DataViewer schema={endpoint.schema} endpointId={endpointId} projectId={projectId} />}
+                    {activeTab === 'data' && <DataViewer schema={endpoint.jsonSchema} endpointId={endpointId} projectId={projectId} />}
                 </div>
             </div>
         </div>

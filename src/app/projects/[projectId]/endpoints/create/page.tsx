@@ -41,7 +41,7 @@ export default function CreateEndpointPage() {
 
         try {
             setSaving(true);
-            await ApiService.post(`/projects/${projectId}/endpoints`, { ...info, schema });
+            await ApiService.post(`/projects/${projectId}/endpoints`, { ...info, jsonSchema: schema });
             toast.success("Endpoint created successfully!");
             window.location.href = `/projects/${projectId}/endpoints`;
         } catch (error: any) {

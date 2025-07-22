@@ -3,16 +3,16 @@ import mongoose, { Schema } from "mongoose";
 const EndpointSchema = new mongoose.Schema(
     {
         projectId: { type: mongoose.Types.ObjectId, required: true, ref: 'Project' },
-        userId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+        userId: { type: String, required: true },
         name: { type: String, required: true },
         endpoint: { type: String, required: true },
         description: String,
-        schema: {
+        jsonSchema: {
             type: Schema.Types.Mixed,
             required: true
         },
         data: {
-            type: [Object],
+            type: [Schema.Types.Mixed],
             default: []
         }
     },
