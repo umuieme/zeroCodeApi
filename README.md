@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ZeroCodeApi
+
+**ZeroCodeApi** is a no-code API builder platform built with Next.js and MongoDB. It enables developers, product teams, and startups to rapidly create backend APIs without writing code. Users can visually define data schemas or import from JSON Schema, generate RESTful CRUD endpoints automatically, and manage data through an intuitive dashboard — all with built-in validation, pagination, filtering, and secure user authentication via Clerk.
+
+This is deployed in Vercel. You can access the website from this link
+https://zero-code-api.vercel.app/
+
+## Features
+
+- **User Authentication & Management: (Sobha)** Powered by Clerk for signup, login, and user session management  
+- **Project Management: (Yatin)** Create and manage multiple isolated projects per user  
+- **Pagination and Filter: (Yatin)** Paginate and filter data
+- **Endpoint & Schema Builder: (Umesh)** Visual UI to define endpoint details and JSON schema for data validation  
+- **Dynamic API Generation: (Umesh)** Auto-generated CRUD REST endpoints for each schema  
+- **Data Dashboard: (Sobha)** View, add, edit, delete records with form-based UI 
+- **Schema-aware Validation: (Yatin)** Request validation using Zod schemas to ensure data integrity  
+- **MongoDB Integration: (Umesh)** Dynamic collections per endpoint with flexible schema storage  
+- **API Documentation: (Sobha)** Auto-generated OpenAPI docs powered by zod-to-openapi and Swagger UI  
+
+## Tech Stack
+
+- Frontend: Next.js (App Router), Tailwind CSS  
+- Backend: Next.js API Routes  
+- Database: MongoDB (native driver, Mongoose)  
+- Authentication: Clerk  
+- Validation: Zod  
+- API Documentation: @asteasolutions/zod-to-openapi + Swagger UI  
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (>=16)  
+- MongoDB cluster or local instance  
+- Clerk account and API keys
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository  
+2. Install dependencies:  
+   ```bash
+   npm install
+3. Configure environment variables in .env
+   ```
+    MONGODB_URI=
+    JWT_SECRET=
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+    CLERK_SECRET_KEY=
+4. Run the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    npm run dev
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
