@@ -1,7 +1,9 @@
-'use client'; 
+'use client';
 
 import { User } from "lucide-react";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
+import LogoutButton from "./logoutButton";
 
 interface AppHeaderProps {
   onNewProjectClick: () => void; 
@@ -17,15 +19,25 @@ export default function AppHeader({ onNewProjectClick }: AppHeaderProps) {
         alt="Logo"
       />
       <div className="flex items-center gap-4">
-       
         <button
           onClick={onNewProjectClick}
-          className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
         >
           + New Project
         </button>
-        <div className="flex bg-gray-700 rounded-full p-2">
-          <User size={32} />
+        
+        <div className="flex items-center gap-2">
+          <div className="flex bg-gray-700 rounded-full p-2">
+            <UserButton 
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "h-8 w-8",
+                  userButtonTrigger: "text-white focus:shadow-none"
+                }
+              }}
+            />
+          </div>
+          <LogoutButton />
         </div>
       </div>
     </header>

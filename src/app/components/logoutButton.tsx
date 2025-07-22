@@ -1,9 +1,22 @@
-import { useAuth } from "@clerk/nextjs";
+'use client';
 
-const LogoutButton = () => {
-  const { signOut } = useAuth();
+import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
-  return <button onClick={() => signOut()}>Log Out</button>;
-};
+export default function LogoutButton() {
+  const { signOut } = useClerk();
+  const router = useRouter();
 
-export default LogoutButton;
+  const handleLogout = () => {
+    signOut().then(() => router.push("/signin"));
+  };
+
+  return (
+    <button
+      onClick={handleLogout}
+      className="px-3 py-1.5 text-sm text-gray-300 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
+    >
+      Sign Out
+    </button>
+  );
+}
