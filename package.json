@@ -11,7 +11,11 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.3.4",
     "@clerk/nextjs": "^6.25.4",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^6.5.0",
     "@rjsf/core": "^5.24.12",
+    "@rjsf/mui": "^5.24.12",
     "@rjsf/validator-ajv8": "^5.24.12",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
